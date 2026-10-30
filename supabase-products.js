@@ -84,7 +84,7 @@
         img.loading = 'lazy';
 
         img.style.cssText =
-          'display:block;width:100%;height:100%;object-fit:contain';
+          'display:block;width:100%;height:100%;object-fit:cover;
 
         imageBox.appendChild(img);
       }
