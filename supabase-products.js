@@ -1,12 +1,11 @@
-﻿
+
 /* OH GIRL: public catalogue connection. Uses only the public publishable key. */
 (() => {
   const SUPABASE_URL = 'https://uvxnstxpnyhpuyuopnuk.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_8a6hID_wvsn2sKRJBVg72w_OMuRidsf';
 
   const headers = {
-    apikey: SUPABASE_KEY,
-    Authorization: `Bearer ${SUPABASE_KEY}`
+    apikey: SUPABASE_KEY
   };
 
   const slugByPage = {
