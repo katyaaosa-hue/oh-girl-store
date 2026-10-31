@@ -176,12 +176,14 @@ galleryStyles.textContent = `
     width: 100%;
     height: 100%;
     object-fit: contain !important;
+    object-position: center;
   }
 
   .thumb img {
     width: 100%;
     height: 100%;
     object-fit: contain !important;
+    object-position: center;
   }
 `;
 
