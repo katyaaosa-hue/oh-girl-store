@@ -168,3 +168,21 @@
     }
   });
 })();
+const galleryStyles = document.createElement('style');
+
+galleryStyles.textContent = `
+  .main-photo img,
+  #largeImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+  }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+  }
+`;
+
+document.head.appendChild(galleryStyles);
