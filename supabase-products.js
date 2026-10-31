@@ -172,17 +172,11 @@ const galleryStyles = document.createElement('style');
 
 galleryStyles.textContent = `
   .main-photo img,
-  #largeImage {
-    width: 100%;
-    height: 100%;
-    object-fit: contain !important;
-    object-position: center;
-  }
-
+  #largeImage,
   .thumb img {
     width: 100%;
     height: 100%;
-    object-fit: contain !important;
+    object-fit: cover !important;
     object-position: center;
   }
 `;
