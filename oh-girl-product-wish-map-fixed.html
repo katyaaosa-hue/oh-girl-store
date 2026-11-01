@@ -175,5 +175,78 @@ main.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX
 drawThumbs();draw();
 </script>
 <script src="supabase-products.js" defer></script>
+
+<script>
+(function() {
+  const KEY = 'ohGirlCart';
+
+  const read = () => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) || '[]');
+    } catch(e) {
+      return [];
+    }
+  };
+
+  const save = (items) => {
+    localStorage.setItem(KEY, JSON.stringify(items));
+    updateBadges();
+  };
+
+  function updateBadges() {
+    const count = read().reduce((s, x) => s + x.qty, 0);
+    document.querySelectorAll('[data-cart-count]').forEach(el => {
+      el.textContent = count;
+    });
+  }
+
+  function addItem(item) {
+    const items = read();
+    const found = items.find(x => x.id === item.id);
+
+    if (found) {
+      found.qty += 1;
+    } else {
+      items.push({...item, qty: 1});
+    }
+
+    save(items);
+
+    const btn = document.querySelector('.add');
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = 'Додано до кошика ✓';
+      setTimeout(() => btn.textContent = old, 1500);
+    }
+  }
+
+  window.OHGirlCart = {
+    read,
+    save,
+    money: n => new Intl.NumberFormat('uk-UA').format(n) + ' ₴',
+    addItem,
+    updateBadges
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateBadges();
+
+    const add = document.querySelector('.add');
+
+    if (add) {
+      add.addEventListener('click', () => {
+        const name = document.querySelector('h1')?.textContent.trim() || 'Товар OH GIRL';
+        const priceNode = document.querySelector('.price');
+        const priceText = priceNode?.textContent || '0';
+        const price = Number(priceText.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+        const id = location.pathname.split('/').pop().replace('.html', '');
+
+        addItem({id, name, price});
+      });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
