@@ -55,52 +55,6 @@
       display: grid; place-items: center; cursor: pointer; color: var(--ink);
     }
     .icon-button svg { width: 21px; height: 21px; }
-    .hero-wrap { padding: 0 3.1%; }
-    .hero {
-      position: relative;
-      min-height: 0;
-      height: auto;
-      aspect-ratio: 1648 / 928;
-      border-radius: 26px;
-      overflow: hidden;
-      background: #e8cbd0;
-    }
-    .hero-photo {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: contain; object-position: center center;
-    }
-    .hero-shade {
-      position: absolute; inset: 0;
-      background: linear-gradient(90deg, rgba(31,20,22,.22), transparent 63%);
-      pointer-events: none;
-    }
-    .hero-copy {
-      position: absolute; left: 6%; bottom: 9%;
-      color: #fff; max-width: 390px;
-      text-shadow: 0 2px 20px rgba(0,0,0,.12);
-    }
-    .eyebrow {
-      text-transform: uppercase; font-size: 10px; font-weight: 700;
-      letter-spacing: 1.4px; margin: 0 0 14px;
-    }
-    .hero h1 {
-      font-size: clamp(38px, 5.6vw, 76px); line-height: .98;
-      letter-spacing: -3.8px; margin: 0 0 17px; font-weight: 700;
-    }
-    .hero-copy p { font-size: 14px; line-height: 1.55; letter-spacing: -.35px; max-width: 290px; margin: 0 0 22px; }
-    .light-link {
-      display: inline-flex; align-items: center; gap: 18px;
-      background: #fff; color: var(--ink); padding: 14px 19px;
-      border-radius: 100px; font-size: 12px; font-weight: 600;
-      text-shadow: none; transition: transform .2s ease;
-    }
-    .light-link:hover { transform: translateY(-2px); }
-    .floating-product {
-      position: absolute; right: 5%; bottom: 7%;
-      width: 190px; padding: 12px; border-radius: 18px;
-      background: rgba(255,255,255,.94); backdrop-filter: blur(10px);
-      box-shadow: 0 12px 35px rgba(35,20,20,.12);
-    }
     .floating-product .placeholder { height: 130px; border-radius: 12px; }
     .floating-product strong { display:block; font-size: 12px; margin: 10px 0 4px; }
     .floating-product span { font-size: 12px; color: var(--muted); }
