@@ -232,24 +232,52 @@ drawThumbs();draw();
     const header = document.querySelector('.header');
 
     if (header && !header.querySelector('[data-product-cart]')) {
-      const cartLink = document.createElement('a');
+    const cartLink = document.createElement('a');
 
-      cartLink.href = 'oh-girl-cart.html';
-      cartLink.dataset.productCart = '';
-      cartLink.setAttribute('aria-label', 'Кошик');
+    cartLink.href = 'oh-girl-cart.html';
+    cartLink.dataset.productCart = '';
+    cartLink.setAttribute('aria-label', 'Кошик');
 
-      cartLink.innerHTML = '🛒 Кошик <span data-cart-count>0</span>';
+    cartLink.innerHTML = `
+        <svg width="22" height="22" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round"
+             stroke-linejoin="round">
+            <path d="M5 8h14l1 13H4L5 8Z"/>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+        </svg>
+        <span data-cart-count>0</span>
+    `;
 
-      cartLink.style.cssText = `
+    cartLink.style.cssText = `
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-left: 16px;
-        color: inherit;
+        color: #222;
         text-decoration: none;
-        font-size: 13px;
-        white-space: nowrap;
-      `;
+    `;
 
-      header.appendChild(cartLink);
-    }
+    const badge = cartLink.querySelector('[data-cart-count]');
+
+    badge.style.cssText = `
+        position: absolute;
+        top: -8px;
+        right: -9px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 50%;
+        background: #8b9d50;
+        color: white;
+        font-size: 11px;
+        line-height: 18px;
+        text-align: center;
+    `;
+
+    header.appendChild(cartLink);
+}
 
     updateBadges();
 
