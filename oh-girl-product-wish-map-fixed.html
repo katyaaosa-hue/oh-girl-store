@@ -229,10 +229,31 @@ drawThumbs();draw();
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.header');
+
+    if (header && !header.querySelector('[data-product-cart]')) {
+      const cartLink = document.createElement('a');
+
+      cartLink.href = 'oh-girl-cart.html';
+      cartLink.dataset.productCart = '';
+      cartLink.setAttribute('aria-label', 'Кошик');
+
+      cartLink.innerHTML = '🛒 Кошик <span data-cart-count>0</span>';
+
+      cartLink.style.cssText = `
+        margin-left: 16px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 13px;
+        white-space: nowrap;
+      `;
+
+      header.appendChild(cartLink);
+    }
+
     updateBadges();
 
     const add = document.querySelector('.add');
-
     if (add) {
       add.addEventListener('click', () => {
         const name = document.querySelector('h1')?.textContent.trim() || 'Товар OH GIRL';
