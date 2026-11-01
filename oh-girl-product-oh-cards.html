@@ -183,6 +183,128 @@ main.addEventListener("touchstart",e=>touchX=e.changedTouches[0].clientX,{passiv
 main.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>45)move(dx<0?1:-1);},{passive:true});
 drawThumbs();draw();
 </script>
+ <script>
+(function () {
+  const CART_KEY = 'ohGirlCart';
+
+  function readCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function writeCart(items) {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+    updateCartCount();
+  }
+
+  function updateCartCount() {
+    const count = readCart().reduce(
+      (sum, item) => sum + Number(item.qty || 0), 0
+    );
+
+    document.querySelectorAll('[data-cart-count]').forEach(el => {
+      el.textContent = count;
+    });
+  }
+
+  function addProductToCart() {
+    const button = document.querySelector('.add');
+    const title = document.querySelector('h1');
+    const priceElement = document.querySelector('.price');
+
+    if (!title || !priceElement) return;
+
+    const name = title.textContent.trim();
+    const price = Number(priceElement.textContent.replace(/[^\d]/g, ''));
+    const id = location.pathname.split('/').pop().replace(/\.html$/i, '') || name;
+
+    if (!price) {
+      alert('Не вдалося визначити ціну товару.');
+      return;
+    }
+
+    const items = readCart();
+    const existing = items.find(item => item.id === id);
+
+    if (existing) {
+      existing.qty = Number(existing.qty || 0) + 1;
+    } else {
+      items.push({ id, name, price, qty: 1 });
+    }
+
+    writeCart(items);
+
+    if (button) {
+      const previousText = button.textContent;
+      button.textContent = 'Додано до кошика ✓';
+      button.disabled = true;
+
+      setTimeout(() => {
+        button.textContent = previousText;
+        button.disabled = false;
+      }, 1300);
+    }
+  }
+
+  window.OHGirlCart = {
+    read: readCart,
+    save: writeCart,
+    addItem: item => {
+      const items = readCart();
+      const existing = items.find(x => x.id === item.id);
+
+      if (existing) existing.qty += 1;
+      else items.push({ ...item, qty: 1 });
+
+      writeCart(items);
+    },
+    updateBadges: updateCartCount
+  };
+
+  document.addEventListener('click', function (event) {
+    const addButton = event.target.closest('.add');
+
+    if (addButton) {
+      event.preventDefault();
+      addProductToCart();
+      return;
+    }
+
+    const cartLink = event.target.closest('[data-product-cart]');
+
+    if (cartLink) {
+      event.preventDefault();
+      location.href = 'oh-girl-cart.html';
+    }
+  });
+
+  function initCartUi() {
+    const header = document.querySelector('.header');
+
+    if (header && !document.querySelector('[data-product-cart]')) {
+      const link = document.createElement('a');
+      link.href = 'oh-girl-cart.html';
+      link.dataset.productCart = '';
+      link.innerHTML = 'Кошик <span data-cart-count></span>';
+      link.style.cssText =
+        'margin-left:16px;color:inherit;text-decoration:none;font-size:13px;white-space:nowrap';
+
+      header.appendChild(link);
+    }
+
+    updateCartCount();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCartUi, { once: true });
+  } else {
+    initCartUi();
+  }
+})();
+</script>
 <script src="supabase-products.js" defer></script>
 </body>
 </html>
