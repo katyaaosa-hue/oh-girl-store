@@ -181,6 +181,109 @@ main.addEventListener("touchstart",e=>touchX=e.changedTouches[0].clientX,{passiv
 main.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>45)move(dx<0?1:-1);},{passive:true});
 drawThumbs();draw();
 </script>
-<script src="supabase-products.js" defer></script>
+
+<script>
+(function () {
+  const CART_KEY = 'ohGirlCart';
+
+  function readCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function updateCartCount() {
+    const count = readCart().reduce(
+      (sum, item) => sum + Number(item.qty || 0), 0
+    );
+
+    document.querySelectorAll('[data-cart-count]').forEach(el => {
+      el.textContent = count;
+    });
+  }
+
+  function addProductToCart() {
+    const name = document.querySelector('h1')?.textContent.trim();
+    const priceText = document.querySelector('.price')?.textContent || '';
+    const price = Number(priceText.replace(/[^\d]/g, ''));
+    const id = location.pathname.split('/').pop().replace(/\.html$/i, '') || name;
+
+    if (!name || !price) {
+      alert('Не вдалося визначити товар або його ціну.');
+      return;
+    }
+
+    const items = readCart();
+    const existing = items.find(item => item.id === id);
+
+    if (existing) {
+      existing.qty = Number(existing.qty || 0) + 1;
+    } else {
+      items.push({ id, name, price, qty: 1 });
+    }
+
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+    updateCartCount();
+
+    const button = document.querySelector('.add');
+    if (button) {
+      const oldText = button.textContent;
+      button.textContent = 'Додано до кошика ✓';
+      setTimeout(() => button.textContent = oldText, 1300);
+    }
+  }
+
+  function initCart() {
+    const header = document.querySelector('.header');
+
+    if (header && !header.querySelector('[data-product-cart]')) {
+      const link = document.createElement('a');
+      link.href = 'oh-girl-cart.html';
+      link.setAttribute('data-product-cart', '');
+      link.style.cssText = 'position:relative;display:flex;align-items:center;color:inherit;text-decoration:none;margin-left:16px;';
+      link.innerHTML = `
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+          stroke="currentColor" stroke-width="1.6">
+          <path d="M5 8h14l-1 13H6L5 8Z"/>
+          <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+        </svg>
+        <span data-cart-count style="position:absolute;top:-8px;right:-9px;min-width:17px;height:17px;padding:0 4px;border-radius:20px;background:#8b9d50;color:white;font:11px Arial;display:flex;align-items:center;justify-content:center;">0</span>
+      `;
+      header.appendChild(link);
+    }
+
+    updateCartCount();
+  }
+
+  document.addEventListener('click', function (event) {
+    const addButton = event.target.closest('.add');
+
+    if (addButton) {
+      event.preventDefault();
+      addProductToCart();
+      return;
+    }
+
+    const cartLink = event.target.closest('[data-product-cart]');
+
+    if (cartLink) {
+      event.preventDefault();
+      location.href = 'oh-girl-cart.html';
+    }
+  });
+
+  window.addEventListener('storage', updateCartCount);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCart);
+  } else {
+    initCart();
+  }
+})();
+</script>
+
+ <script src="supabase-products.js" defer></script>
 </body>
 </html>
