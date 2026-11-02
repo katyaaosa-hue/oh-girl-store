@@ -109,9 +109,14 @@
     .arrow:disabled { opacity:.3; cursor:default; }
     .product-track-window { overflow:hidden; }
     .product-track {
-      display:grid; grid-auto-flow:column; grid-auto-columns:calc((100% - 42px) / 4);
-      gap:14px; transition:transform .4s cubic-bezier(.2,.7,.2,1);
-    }
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, calc((100% - 42px) / 4));
+  gap: 14px;
+  transition: transform .4s cubic-bezier(.2,.7,.2,1);
+}
     .product-card { min-width:0; }
     .product-image { aspect-ratio: 1 / 1; border-radius:17px; }
     .product-image .placeholder { position:absolute; inset:0; }
