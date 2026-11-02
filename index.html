@@ -299,7 +299,10 @@
       .story-art { min-height:220px; }
       .story-art-mark { font-size:75px; letter-spacing:-6px; }
       .products-section { padding-top:54px; }
-      .product-track { grid-auto-columns:calc((100% - 12px) / 2); gap:12px; }
+      .product-track {
+  grid-auto-columns: minmax(0, calc((100% - 12px) / 2));
+  gap: 12px;
+}
       .product-image { border-radius:13px; }
       .product-name { font-size:12px; }
       .price-row { font-size:12px; flex-wrap:wrap; }
